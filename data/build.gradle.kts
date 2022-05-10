@@ -3,6 +3,7 @@ plugins {
     kotlin(GradlePlugins.kotlinAndroid)
     kotlin(GradlePlugins.kotlinApt)
     kotlin(GradlePlugins.kotlinExt)
+    id(GradlePlugins.hilt)
 }
 
 apply {
@@ -57,9 +58,9 @@ dependencies {
     // module
     implementation(project(Modules.domain))
 
-    // rx
-    implementation(Libs.rxAndroid)
-    implementation(Libs.rxJava)
+    // coroutines
+    implementation(Libs.coroutines)
+    implementation(Libs.coroutinesAndroid)
 
     // room database
     api(Libs.roomRuntime)
@@ -75,13 +76,9 @@ dependencies {
     implementation(Libs.retrofitGson)
     implementation(Libs.retrofitAdapter)
 
-    // dagger
-    implementation(Libs.daggerCore)
-    implementation(Libs.daggerAndroid)
-    implementation(Libs.daggerSupport)
-
-    kapt(Libs.daggerProcessor)
-    kapt(Libs.daggerCompiler)
+    // hilt
+    implementation(Libs.hilt)
+    kapt(Libs.hiltCompiler)
 
     implementation(Libs.okLogging)
     implementation(Libs.timber)

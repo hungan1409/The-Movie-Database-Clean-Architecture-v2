@@ -1,18 +1,16 @@
 package com.example.moviedatabase
 
+import android.app.Application
 import com.crashlytics.android.Crashlytics
 import com.crashlytics.android.core.CrashlyticsCore
 import com.example.moviedatabase.crashlytics.CrashlyticsTree
 import com.example.moviedatabase.data.BuildConfig
-import com.example.moviedatabase.di.component.DaggerAppComponent
-import dagger.android.AndroidInjector
-import dagger.android.DaggerApplication
+import dagger.hilt.android.HiltAndroidApp
 import io.fabric.sdk.android.Fabric
 import timber.log.Timber
 
-class MainApplication : DaggerApplication() {
-    override fun applicationInjector(): AndroidInjector<MainApplication> =
-        DaggerAppComponent.factory().create(this)
+@HiltAndroidApp
+class MainApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()

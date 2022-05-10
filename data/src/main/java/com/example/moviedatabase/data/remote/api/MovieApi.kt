@@ -13,34 +13,34 @@ import retrofit2.http.Query
 
 interface MovieApi {
     @GET("movie/popular")
-    fun getMovieListPopular(@Query(ApiParams.PAGE) page: Int): Single<GetMovieResponse>
+    suspend fun getMovieListPopular(@Query(ApiParams.PAGE) page: Int): GetMovieResponse
 
     @GET("movie/top_rated")
-    fun getMovieListTopRated(@Query(ApiParams.PAGE) page: Int): Single<GetMovieResponse>
+    suspend fun getMovieListTopRated(@Query(ApiParams.PAGE) page: Int): GetMovieResponse
 
     @GET("movie/upcoming")
-    fun getMovieListUpcoming(@Query(ApiParams.PAGE) page: Int): Single<GetMovieResponse>
+    suspend fun getMovieListUpcoming(@Query(ApiParams.PAGE) page: Int): GetMovieResponse
 
     @GET("genre/movie/list")
-    fun getMovieGenres(): Single<GetGenresResponse>
+    suspend fun getMovieGenres(): GetGenresResponse
 
     @GET("movie/{movie_id}")
-    fun getMovieDetail(@Path(ApiParams.MOVIE_ID) movieId: Int): Single<MovieDetailEntity>
+    suspend fun getMovieDetail(@Path(ApiParams.MOVIE_ID) movieId: Int): MovieDetailEntity
 
     @GET("movie/{movie_id}/videos")
-    fun getMovieVideos(@Path(ApiParams.MOVIE_ID) movieId: Int): Single<MovieVideosEntity>
+    suspend fun getMovieVideos(@Path(ApiParams.MOVIE_ID) movieId: Int): MovieVideosEntity
 
     @GET("movie/{movie_id}/credits")
-    fun getMovieCredits(@Path(ApiParams.MOVIE_ID) movieId: Int): Single<MovieCreditsEntity>
+    suspend fun getMovieCredits(@Path(ApiParams.MOVIE_ID) movieId: Int): MovieCreditsEntity
 
     @GET("movie/{movie_id}/recommendations")
-    fun getMovieRecommendations(
+    suspend fun getMovieRecommendations(
         @Path(ApiParams.MOVIE_ID) movieId: Int,
         @Query(ApiParams.PAGE) page: Int
-    ): Single<GetMovieResponse>
+    ): GetMovieResponse
 
     @GET("movie/{movie_id}/reviews")
-    fun getMovieComments(@Path(ApiParams.MOVIE_ID) movieId: Int): Single<GetMovieCommentsResponse>
+    suspend fun getMovieComments(@Path(ApiParams.MOVIE_ID) movieId: Int): GetMovieCommentsResponse
 }
 
 object ApiParams {

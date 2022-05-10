@@ -1,24 +1,23 @@
 package com.example.moviedatabase.domain.repository
 
 import com.example.moviedatabase.domain.model.*
-import io.reactivex.Single
 
 interface MovieRepository {
-    fun getMovieListPopular(page: Int): Single<List<Movie>>
+    suspend fun getMovieListPopular(page: Int): List<Movie>
 
-    fun getMovieListTopRated(page: Int): Single<List<Movie>>
+    suspend fun getMovieListTopRated(page: Int): List<Movie>
 
-    fun getMovieListUpcoming(page: Int): Single<List<Movie>>
+    suspend fun getMovieListUpcoming(page: Int): List<Movie>
 
-    fun getMovieGenres(): Single<List<Genre>>
+    suspend fun getMovieGenres(): List<Genre>
 
-    fun getMovieDetail(movieId: Int): Single<MovieDetail>
+    suspend fun getMovieDetail(movieId: Int): MovieDetail
 
-    fun getMovieVideos(movieId: Int): Single<MovieVideos>
+    suspend fun getMovieVideos(movieId: Int): MovieVideos
 
-    fun getMovieCredits(movieId: Int): Single<MovieCredits>
+    suspend fun getMovieCredits(movieId: Int): MovieCredits
 
-    fun getMovieComments(movieId: Int): Single<List<MovieComment>>
+    suspend fun getMovieComments(movieId: Int): List<MovieComment>
 
-    fun getMovieRecommendations(movieId: Int, page: Int): Single<List<Movie>>
+    suspend fun getMovieRecommendations(movieId: Int, page: Int): List<Movie>
 }

@@ -18,7 +18,9 @@ import com.example.moviedatabase.ui.moviedetail.adapter.MovieCreditAdapter
 import com.example.moviedatabase.ui.moviedetail.adapter.MovieRecommendationAdapter
 import com.example.moviedatabase.ui.moviedetail.adapter.MovieVideoAdapter
 import com.example.moviedatabase.widget.NonDividerLastItemDecorator
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MovieDetailFragment : BaseFragment<FragmentMovieDetailBinding, MovieDetailViewModel>() {
 
     private var movieVideoAdapter: MovieVideoAdapter? = null
@@ -28,7 +30,7 @@ class MovieDetailFragment : BaseFragment<FragmentMovieDetailBinding, MovieDetail
 
     override val layoutId: Int = R.layout.fragment_movie_detail
 
-    override val viewModel: MovieDetailViewModel by viewModels { viewModelFactory }
+    override val viewModel: MovieDetailViewModel by viewModels()
 
     private val args: MovieDetailFragmentArgs by navArgs()
 

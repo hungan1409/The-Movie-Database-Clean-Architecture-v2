@@ -13,10 +13,12 @@ import com.example.moviedatabase.databinding.FragmentHomeBinding
 import com.example.moviedatabase.model.GenreItem
 import com.example.moviedatabase.model.MovieItem
 import com.example.moviedatabase.ui.home.adapter.*
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>() {
 
-    override val viewModel: HomeViewModel by viewModels { viewModelFactory }
+    override val viewModel: HomeViewModel by viewModels()
 
     override val layoutId: Int = R.layout.fragment_home
 

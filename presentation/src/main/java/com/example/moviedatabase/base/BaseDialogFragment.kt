@@ -7,12 +7,12 @@ import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.moviedatabase.util.autoCleared
-import dagger.android.support.DaggerDialogFragment
 import javax.inject.Inject
 
-abstract class BaseDialogFragment<T : ViewDataBinding, V : BaseViewModel> : DaggerDialogFragment() {
+abstract class BaseDialogFragment<T : ViewDataBinding, V : BaseViewModel> : Fragment() {
 
     abstract val bindingVariable: Int
 

@@ -12,6 +12,7 @@ import androidx.annotation.Size
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.moviedatabase.BR
@@ -19,21 +20,17 @@ import com.example.moviedatabase.R
 import com.example.moviedatabase.extension.showDialog
 import com.example.moviedatabase.util.Permission
 import com.example.moviedatabase.util.autoCleared
-import dagger.android.support.DaggerFragment
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.EasyPermissions
 import javax.inject.Inject
 
-abstract class BaseFragment<T : ViewDataBinding, V : BaseViewModel> : DaggerFragment(),
+abstract class BaseFragment<T : ViewDataBinding, V : BaseViewModel> : Fragment(),
     EasyPermissions.PermissionCallbacks {
 
     abstract val viewModel: V
 
     @get:LayoutRes
     abstract val layoutId: Int
-
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private var errorMessageDialog: AlertDialog? = null
 

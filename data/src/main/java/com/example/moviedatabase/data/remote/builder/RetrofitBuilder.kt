@@ -3,8 +3,6 @@ package com.example.moviedatabase.data.remote.builder
 import android.content.Context
 import com.example.moviedatabase.data.BuildConfig
 import com.example.moviedatabase.data.HttpClient
-import com.example.moviedatabase.data.remote.auth.OauthRefreshAuthenticator
-import com.example.moviedatabase.data.remote.factory.RxErrorHandlingFactory
 import okhttp3.Authenticator
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -26,9 +24,6 @@ class RetrofitBuilder @Inject constructor(private val context: Context) {
     private var isSupportAuthorization = false
     private var authenticator: Authenticator? = null
     private var baseUrl: String = BuildConfig.BASE_URL
-
-    @Inject
-    lateinit var oauthRefreshAuthenticator: OauthRefreshAuthenticator
 
     /**
      * Customize time out
@@ -118,7 +113,6 @@ class RetrofitBuilder @Inject constructor(private val context: Context) {
 
             val auth: Authenticator? = when {
                 authenticator != null -> authenticator
-                isSupportAuthorization -> oauthRefreshAuthenticator
                 else -> null
             }
 
@@ -130,7 +124,6 @@ class RetrofitBuilder @Inject constructor(private val context: Context) {
         return Retrofit.Builder()
             .baseUrl(baseUrl)
             .client(clientBuilder.build())
-            .addCallAdapterFactory(RxErrorHandlingFactory())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }

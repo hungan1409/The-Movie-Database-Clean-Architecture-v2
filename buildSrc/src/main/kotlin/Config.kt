@@ -27,7 +27,7 @@ object Versions {
     internal const val mockWebserver = "3.8.1"
     internal const val robolectric = "4.3"
 
-    internal const val retrofit = "2.2.0"
+    internal const val retrofit = "2.9.0"
     internal const val okLogging = "3.9.0"
 
     internal const val constraintLaout = "2.0.0-beta2"
@@ -42,9 +42,9 @@ object Versions {
     internal const val navigationSafe = "2.1.0-alpha05"
 
     internal const val exo = "2.8.2"
-    internal const val coroutines = "1.3.0"
+    internal const val coroutines = "1.6.1"
 
-    internal const val dagger = "2.26"
+    internal const val hilt = "2.38.1"
     internal const val fragmentKtx = "1.3.0-alpha01"
 
     internal const val googleService = "4.3.0"
@@ -70,6 +70,7 @@ object BuildPlugins {
         "androidx.navigation:navigation-safe-args-gradle-plugin:${Versions.navigationSafe}"
     const val googleService = "com.google.gms:google-services:${Versions.googleService}"
     const val fabric = "io.fabric.tools:gradle:${Versions.fabric}"
+    const val hilt = "com.google.dagger:hilt-android-gradle-plugin:${Versions.hilt}"
 }
 
 object Android {
@@ -92,6 +93,7 @@ object GradlePlugins {
     const val navigationSafeKotlin = "androidx.navigation.safeargs.kotlin"
     const val fabric = "io.fabric"
     const val playService = "com.google.gms.google-services"
+    const val hilt = "dagger.hilt.android.plugin"
 }
 
 object Modules {
@@ -157,9 +159,9 @@ object Libs {
         "androidx.lifecycle:lifecycle-viewmodel-savedstate:${Versions.lifecycleSaved}"
     const val fragmentKtx = "androidx.fragment:fragment-ktx:${Versions.fragmentKtx}"
 
-    // RxKotlin & RxJava
-    const val rxAndroid = "io.reactivex.rxjava2:rxandroid:${Versions.rxAndroid}"
-    const val rxJava = "io.reactivex.rxjava2:rxjava:${Versions.rxJava}"
+    // Coroutines
+    const val coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.coroutines}"
+    const val coroutinesAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.coroutines}"
 
     // retrofit
     const val retrofitRuntime = "com.squareup.retrofit2:retrofit:${Versions.retrofit}"
@@ -215,19 +217,13 @@ object Libs {
     // Hamcrest for testing
     const val hamcrest = "org.hamcrest:hamcrest-all:${Versions.hamcrest}"
 
-    //
-    const val coroutinesCore =
-        "org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.coroutines}"
-    const val coroutinesAndroid =
-        "org.jetbrains.kotlinx:kotlinx-coroutines-android:${Versions.coroutines}"
-
-    // Dagger 2
-    const val daggerCore = "com.google.dagger:dagger:${Versions.dagger}"
-    const val daggerAndroid = "com.google.dagger:dagger-android:${Versions.dagger}"
-    const val daggerSupport = "com.google.dagger:dagger-android-support:${Versions.dagger}"
-
-    const val daggerProcessor = "com.google.dagger:dagger-android-processor:${Versions.dagger}"
-    const val daggerCompiler = "com.google.dagger:dagger-compiler:${Versions.dagger}"
+    // Hilt
+    const val hilt = "com.google.dagger:hilt-android:${Versions.hilt}"
+    const val hiltCore = "com.google.dagger:hilt-core:${Versions.hilt}"
+    const val hiltCompiler = "com.google.dagger:hilt-android-compiler:${Versions.hilt}"
+    const val hiltNavigation = "androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03"
+    const val hiltLifeCycle = "androidx.hilt:hilt-navigation-fragment:1.0.0-beta01"
+    const val hiltCompilerAndroidX = "androidx.hilt:hilt-compiler:1.0.0"
 
     const val firebaseCore = "com.google.firebase:firebase-core:${Versions.firebaseCore}"
     const val firebaseAnalytics =

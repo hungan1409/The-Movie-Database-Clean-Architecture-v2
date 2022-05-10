@@ -3,16 +3,15 @@ package com.example.moviedatabase.domain.usecase.movie
 import com.example.moviedatabase.domain.model.MovieCredits
 import com.example.moviedatabase.domain.repository.MovieRepository
 import com.example.moviedatabase.domain.usecase.UseCase
-import io.reactivex.Single
 import javax.inject.Inject
 
 class GetMovieCreditsUseCase @Inject constructor(
     private val movieRepository: MovieRepository
-) : UseCase<GetMovieCreditsUseCase.Params, Single<MovieCredits>>() {
+) : UseCase<GetMovieCreditsUseCase.Params, MovieCredits>() {
 
-    override fun createObservable(params: Params?): Single<MovieCredits> {
+    override suspend fun createObservable(params: Params?): MovieCredits {
         return when (params) {
-            null -> Single.error(Throwable(message = "Params input not null"))
+            null -> error(Throwable(message = "Params input not null"))
             else -> movieRepository.getMovieCredits(params.movieId)
         }
     }

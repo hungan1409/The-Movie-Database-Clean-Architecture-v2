@@ -6,14 +6,20 @@ import com.example.moviedatabase.data.di.NetworkModule
 import com.example.moviedatabase.data.di.RepositoryModule
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
-@Module(includes = [ViewModelModule::class, FragmentBuildersModule::class, NetworkModule::class, RepositoryModule::class])
+// This module tells a Component which are its subcomponents
+// Install this module in Hilt-generated SingletonComponent
+@InstallIn(SingletonComponent::class)
+@Module
 class AppModule {
 
     @Singleton
     @Provides
-    fun providerContext(application: MainApplication): Context {
-        return application.applicationContext
+    fun providerContext(@ApplicationContext context: Context): Context {
+        return context
     }
 }

@@ -12,13 +12,12 @@ dependencies {
     implementation(Libs.stdLib)
     implementation(Libs.ktx)
 
-    // rx
-    implementation(Libs.rxJava)
-    implementation(Libs.rxAndroid)
+    // coroutines
+    implementation(Libs.coroutines)
+    implementation(Libs.coroutinesAndroid)
 
-    // dagger
-    implementation(Libs.daggerAndroid)
-    implementation(Libs.daggerSupport)
+    // Hilt
+    implementation(Libs.hiltCore)
 
     // test
     testImplementation(Libs.junit)

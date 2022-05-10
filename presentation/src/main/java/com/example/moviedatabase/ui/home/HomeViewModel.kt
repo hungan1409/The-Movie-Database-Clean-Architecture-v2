@@ -1,16 +1,18 @@
 package com.example.moviedatabase.ui.home
 
+import androidx.lifecycle.viewModelScope
 import com.example.moviedatabase.base.BaseViewModel
 import com.example.moviedatabase.domain.usecase.movie.*
-import com.example.moviedatabase.extension.add
 import com.example.moviedatabase.model.GenreItem
 import com.example.moviedatabase.model.GenreItemMapper
 import com.example.moviedatabase.model.MovieItem
 import com.example.moviedatabase.model.MovieItemMapper
-import com.example.moviedatabase.util.RxUtils
 import com.example.moviedatabase.util.SingleLiveData
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class HomeViewModel @Inject constructor(
     private val getMoviePopularUseCase: GetMoviePopularUseCase,
     private val getMovieUpcomingUseCase: GetMovieUpcomingUseCase,
@@ -36,109 +38,115 @@ class HomeViewModel @Inject constructor(
         if (isLoading.value == false) {
             showLoading()
         }
-        getGenresUseCase.createObservable()
-            .compose(RxUtils.applySingleScheduler()).map {
-                it.map { genre ->
+
+        viewModelScope.launch {
+            try {
+                moviesGenres.value = getGenresUseCase.createObservable().map { genre ->
                     genreItemMapper.mapToPresentation(genre)
                 }
-            }.subscribe({
                 hideLoading()
-                moviesGenres.value = it
-            }, {
+            } catch (e: Exception) {
                 hideLoading()
-                setThrowable(it)
-            }).add(this)
-
+                setThrowable(e)
+            }
+        }
     }
 
     fun getMovieListPopular(page: Int) {
         if (isLoading.value == false) {
             showLoading()
         }
-        getMoviePopularUseCase.createObservable(GetMoviePopularUseCase.Params(page))
-            .compose(RxUtils.applySingleScheduler()).map {
-                it.map { movieItem ->
-                    movieItemMapper.mapToPresentation(movieItem)
-                }
-            }.subscribe({
+
+        viewModelScope.launch {
+            try {
+                val movies =
+                    getMoviePopularUseCase.createObservable(GetMoviePopularUseCase.Params(page))
+                        .map { movieItem ->
+                            movieItemMapper.mapToPresentation(movieItem)
+                        }
                 val listMovie = ArrayList<MovieItem>()
                 listMovie.addAll(moviesPopulars.value ?: emptyList())
-                listMovie.addAll(it)
+                listMovie.addAll(movies)
                 moviesPopulars.value = listMovie
                 hideLoading()
-            }, {
+            } catch (e: Exception) {
                 hideLoading()
-                setThrowable(it)
-            }).add(this)
-
+                setThrowable(e)
+            }
+        }
     }
 
     fun getMovieListUpcoming(page: Int) {
         if (isLoading.value == false) {
             showLoading()
         }
-        getMovieUpcomingUseCase.createObservable(GetMovieUpcomingUseCase.Params(page))
-            .compose(RxUtils.applySingleScheduler()).map {
-                it.map { movieItem ->
-                    movieItemMapper.mapToPresentation(movieItem)
-                }
-            }.subscribe({
+        viewModelScope.launch {
+            try {
+                val movies =
+                    getMovieUpcomingUseCase.createObservable(GetMovieUpcomingUseCase.Params(page))
+                        .map { movieItem ->
+                            movieItemMapper.mapToPresentation(movieItem)
+                        }
                 val listMovie = ArrayList<MovieItem>()
                 listMovie.addAll(moviesUpcoming.value ?: emptyList())
-                listMovie.addAll(it)
+                listMovie.addAll(movies)
                 moviesUpcoming.value = listMovie
                 hideLoading()
-            }, {
+            } catch (e: Exception) {
                 hideLoading()
-                setThrowable(it)
-            }).add(this)
-
+                setThrowable(e)
+            }
+        }
     }
 
     fun getMovieListTopRated(page: Int) {
         if (isLoading.value == false) {
             showLoading()
         }
-        getMovieTopRatedUseCase.createObservable(GetMovieTopRatedUseCase.Params(page))
-            .compose(RxUtils.applySingleScheduler()).map {
-                it.map { movieItem ->
-                    movieItemMapper.mapToPresentation(movieItem)
-                }
-            }.subscribe({
+        viewModelScope.launch {
+            try {
+                val movies =
+                    getMovieTopRatedUseCase.createObservable(GetMovieTopRatedUseCase.Params(page))
+                        .map { movieItem ->
+                            movieItemMapper.mapToPresentation(movieItem)
+                        }
                 val listMovie = ArrayList<MovieItem>()
                 listMovie.addAll(moviesTopRated.value ?: emptyList())
-                listMovie.addAll(it)
+                listMovie.addAll(movies)
                 moviesTopRated.value = listMovie
                 hideLoading()
-            }, {
+            } catch (e: Exception) {
                 hideLoading()
-                setThrowable(it)
-            }).add(this)
+                setThrowable(e)
+            }
+        }
     }
 
     fun getMovieRecommendations(page: Int) {
         if (movieId.value == -1) {
             return
         }
-        getMovieRecommendationsUseCase.createObservable(
-            GetMovieRecommendationsUseCase.Params(
-                movieId.value!!, page
-            )
-        )
-            .compose(RxUtils.applySingleScheduler())
-            .map {
-                it.map { movieItem ->
-                    movieItemMapper.mapToPresentation(movieItem)
-                }
-            }
-            .subscribe({
+        viewModelScope.launch {
+            try {
+                val movies =
+                    getMovieRecommendationsUseCase.createObservable(
+                        GetMovieRecommendationsUseCase.Params(
+                            movieId.value!!, page
+                        )
+                    )
+                        .map { movieItem ->
+                            movieItemMapper.mapToPresentation(movieItem)
+                        }
                 val listMovie = ArrayList<MovieItem>()
                 listMovie.addAll(moviesRecommendations.value ?: emptyList())
-                listMovie.addAll(it)
+                listMovie.addAll(movies)
                 moviesRecommendations.value = listMovie
-            }, {
-                setThrowable(it)
-            }).add(this)
+                hideLoading()
+            } catch (e: Exception) {
+                hideLoading()
+                setThrowable(e)
+            }
+        }
     }
 
     fun refreshMoviePage() {

@@ -3,14 +3,16 @@ package com.example.moviedatabase.ui.moviedetail
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
+import androidx.lifecycle.viewModelScope
 import com.example.moviedatabase.base.BaseViewModel
 import com.example.moviedatabase.domain.usecase.movie.*
-import com.example.moviedatabase.extension.add
 import com.example.moviedatabase.extension.toMMMMyyyy
 import com.example.moviedatabase.model.*
-import com.example.moviedatabase.util.RxUtils
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@HiltViewModel
 class MovieDetailViewModel @Inject constructor(
     private val getMovieDetailUseCase: GetMovieDetailUseCase,
     private val getMovieVideosUseCase: GetMovieVideosUseCase,
@@ -55,69 +57,77 @@ class MovieDetailViewModel @Inject constructor(
     }
 
     fun getMovieDetail(movieId: Int) {
-        getMovieDetailUseCase.createObservable(GetMovieDetailUseCase.Params(movieId))
-            .compose(RxUtils.applySingleScheduler())
-            .map { movieDetailItemMapper.mapToPresentation(it) }
-            .subscribe({
-                movieDetailItem.value = it
-            }, {
-                setThrowable(it)
-            }).add(this)
+        viewModelScope.launch {
+            try {
+                movieDetailItem.value = movieDetailItemMapper.mapToPresentation(
+                    getMovieDetailUseCase.createObservable(GetMovieDetailUseCase.Params(movieId))
+                )
+            } catch (e: Exception) {
+                hideLoading()
+                setThrowable(e)
+            }
+        }
     }
 
     fun getMovieVideos(movieId: Int) {
-        getMovieVideosUseCase.createObservable(GetMovieVideosUseCase.Params(movieId))
-            .compose(RxUtils.applySingleScheduler())
-            .map { movieVideosItemMapper.mapToPresentation(it) }
-            .subscribe({
-                movieVideosItem.value = it
-            }, {
-                setThrowable(it)
-            }).add(this)
+        viewModelScope.launch {
+            try {
+                movieVideosItem.value = movieVideosItemMapper.mapToPresentation(
+                    getMovieVideosUseCase.createObservable(GetMovieVideosUseCase.Params(movieId))
+                )
+            } catch (e: Exception) {
+                setThrowable(e)
+            }
+        }
     }
 
     fun getMovieCredits(movieId: Int) {
-        getMovieCreditsUseCase.createObservable(GetMovieCreditsUseCase.Params(movieId))
-            .compose(RxUtils.applySingleScheduler())
-            .map { movieCreditsItemMapper.mapToPresentation(it) }
-            .subscribe({
-                movieCreditsItem.value = it
-            }, {
-                setThrowable(it)
-            }).add(this)
+        viewModelScope.launch {
+            try {
+                movieCreditsItem.value = movieCreditsItemMapper.mapToPresentation(
+                    getMovieCreditsUseCase.createObservable(GetMovieCreditsUseCase.Params(movieId))
+                )
+            } catch (e: Exception) {
+                setThrowable(e)
+            }
+        }
     }
 
     fun getMovieComments(movieId: Int) {
-        getMovieCommentsUseCase.createObservable(GetMovieCommentsUseCase.Params(movieId))
-            .compose(RxUtils.applySingleScheduler())
-            .map { list -> list.map { movieCommentItemMapper.mapToPresentation(it) } }
-            .subscribe({
-                movieCommentsItem.value = it.take(MAX_COMMENTS_DISPLAYED)
-            }, {
-                setThrowable(it)
-            }).add(this)
+        viewModelScope.launch {
+            try {
+                movieCommentsItem.value =
+                    getMovieCommentsUseCase.createObservable(GetMovieCommentsUseCase.Params(movieId))
+                        .map {
+                            movieCommentItemMapper.mapToPresentation(it)
+                        }.take(MAX_COMMENTS_DISPLAYED)
+
+            } catch (e: Exception) {
+                setThrowable(e)
+            }
+        }
     }
 
     fun getMovieRecommendations(movieId: Int, page: Int) {
-        getMovieRecommendationsUseCase.createObservable(
-            GetMovieRecommendationsUseCase.Params(
-                movieId, page
-            )
-        )
-            .compose(RxUtils.applySingleScheduler())
-            .map {
-                it.map { movieItem ->
-                    movieItemMapper.mapToPresentation(movieItem)
-                }
-            }
-            .subscribe({
-                var listMovie = ArrayList<MovieItem>()
+        viewModelScope.launch {
+            try {
+                val movies =
+                    getMovieRecommendationsUseCase.createObservable(
+                        GetMovieRecommendationsUseCase.Params(
+                            movieId, page
+                        )
+                    )
+                        .map { movieItem ->
+                            movieItemMapper.mapToPresentation(movieItem)
+                        }
+                val listMovie = ArrayList<MovieItem>()
                 listMovie.addAll(movieRecommendations.value ?: emptyList())
-                listMovie.addAll(it)
+                listMovie.addAll(movies)
                 movieRecommendations.value = listMovie
-            }, {
-                setThrowable(it)
-            }).add(this)
+            } catch (e: Exception) {
+                setThrowable(e)
+            }
+        }
     }
 
     companion object {

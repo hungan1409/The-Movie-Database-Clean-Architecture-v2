@@ -3,6 +3,7 @@ plugins {
     kotlin(GradlePlugins.kotlinAndroid)
     kotlin(GradlePlugins.kotlinApt)
     kotlin(GradlePlugins.kotlinExt)
+    id(GradlePlugins.hilt)
 }
 
 apply {
@@ -101,23 +102,18 @@ dependencies {
     // Glide
     implementation(Libs.glideRuntime)
 
-    // Rx
-    implementation(Libs.rxJava)
-    implementation(Libs.rxAndroid)
+    // coroutines
+    implementation(Libs.coroutines)
+    implementation(Libs.coroutinesAndroid)
 
-    // Binding
-//    kapt(Libs.glideCompiler)
-//    kapt(Libs.lifecycleJava8)
-//    kapt(Libs.bindingCompiler)
-    kapt(Libs.daggerProcessor)
-    kapt(Libs.daggerCompiler)
+    // Hilt
+    implementation(Libs.hilt)
+    implementation(Libs.hiltLifeCycle)
+    implementation(Libs.hiltNavigation)
+    kapt(Libs.hiltCompiler)
+    kapt(Libs.hiltCompilerAndroidX)
+
     kapt(Libs.metadataJvm)
-
-
-    // Dagger 2
-    implementation(Libs.daggerCore)
-    implementation(Libs.daggerAndroid)
-    implementation(Libs.daggerSupport)
 
     implementation(Libs.retrofitGson)
     implementation(Libs.retrofitRuntime)
@@ -136,10 +132,6 @@ dependencies {
     // Navigation
     implementation(Libs.navigationUiKtx)
     implementation(Libs.navigationFragmentKtx)
-
-    // coroutines
-    implementation(Libs.coroutinesCore)
-    implementation(Libs.coroutinesAndroid)
 
     // logging
     implementation(Libs.timber)
